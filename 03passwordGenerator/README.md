@@ -1,8 +1,9 @@
-# React + Vite
+#Project 3 of my learning React from scratch
+It's a small project though it thought me a lot about 3 things
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+1. useCallback - Such a usefull hook that helps you to eache a function defination between re-renders. Here in this project I use it to passwordGenarator function that helps me to create a random functin and when ever we change any of those dependencies value useCallback function help us to call the function again and again.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+2. useEffect -  This Hooks lets us synchronize a component with an external system. I use useEffect to re-render our component every time our passwordGenerator function is called and we should update the DOM so we use useEffect hook for that purpose
+
+3. useRef - This hook lets us reference a value that’s not needed for rendering. In this project I use as a referance of the password and store it in passwordRef then I use it to copy our password and store it in clipboard
