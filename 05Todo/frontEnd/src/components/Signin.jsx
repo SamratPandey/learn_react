@@ -1,5 +1,7 @@
 import * as React from "react";
 import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
+
 
 import { Button } from "@/components/ui/button";
 import {
@@ -16,9 +18,11 @@ import { Link } from "react-router";
 import { LogIn } from "lucide-react";
 
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 function Signin() {
 
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     email:"",
@@ -32,11 +36,20 @@ function Signin() {
 
 
   const handleSignin = async () =>{
+   try {
     const response = await axios.post("http://localhost:8000/login",{
       email: formData.email,
       password: formData.password,
     })
-    console.log(response.data)
+    localStorage.setItem("token", response.data.token)
+    toast.success(response.data.message)
+    toast.success("Redirecting to Todo Page...")
+    setTimeout(() => {
+      navigate("/todo")
+    }, 1000)
+   } catch (error) {
+    toast.error(error.response.data.message)
+   }
   }
 
 
@@ -97,7 +110,20 @@ function Signin() {
             </Link>
           </span>
         </CardFooter>
+       
       </Card>
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        toastOptions={{
+          className: "",
+          duration: 5000,
+          style: {
+            background: "#333",
+            color: "#fff",
+          },
+        }}
+      />
     </div>
   );
 }
