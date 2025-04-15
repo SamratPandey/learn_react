@@ -1,6 +1,8 @@
 import * as React from "react";
 import axios from "axios";
 import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+
 
 import { Button } from "@/components/ui/button";
 import {
@@ -38,8 +40,8 @@ import { LogIn } from "lucide-react";
       email: formData.email,
       password: formData.password
     })
-
-    console.log(response.data.message)
+    setMessage(response.data.message);
+    toast.success(message);
   }
 
   
@@ -115,6 +117,9 @@ import { LogIn } from "lucide-react";
             </Link>
           </span>
         </CardFooter>
+        <Toaster 
+          position="top-right"
+        />
       </Card>
     </div>
   );
