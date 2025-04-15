@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router";
-import { LogIn } from "lucide-react";
+import { LogIn, Mail, Lock, ArrowRight } from "lucide-react";
 
 import { useState } from "react";
 import { useNavigate } from "react-router";
@@ -42,8 +42,7 @@ function Signin() {
       password: formData.password,
     })
     localStorage.setItem("token", response.data.token)
-    toast.success(response.data.message)
-    toast.success("Redirecting to Todo Page...")
+    toast.success(`${response.data.message}, redirecting...`)
     setTimeout(() => {
       navigate("/todo")
     }, 1000)
@@ -54,61 +53,65 @@ function Signin() {
 
 
   return (
-    <div className="flex items-center justify-center h-screen bg-[#006A71]">
-      <Card className="w-[350px] bg-[#838b8b] text-black ">
-        <CardHeader>
-          <CardTitle className="font-bold text-2xl text-black flex justify-center">
-            Signin
-          </CardTitle>
-          <CardDescription className="text-black font-medium flex justify-center">
-            A Todo Application for your daily uses
-          </CardDescription>
-        </CardHeader>
+    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+      <div className="flex flex-col items-center mb-6">
+          <h1 className="text-3xl font-semibold">Welcome Back</h1>
+          <p className="text-gray-500 font-semibold text-base">Sign in to access your Todo</p>
+      </div>
+      <Card className="w-[350px] bg-white text-gray-800 shadow-lg">
         <CardContent>
           <form>
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="email" className="font-bold">
-                  Email
+                <Label htmlFor="email" className="text-base font-semibold">
+                  Email Address
                 </Label>
-                <Input
-                  className="placeholder:font-medium placeholder:text-black"
-                  type="email"
-                  name="email"
-                  placeholder="Enter your email"
-                  value={formData.email}
-                  onChange={(e) => handleFormData(e)}
-                />
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+                  <Input
+                    className="pl-11 font-semibold placeholder:font-semibold text-gray-500 placeholder:text-gray-500"
+                    type="email"
+                    name="email"
+                    placeholder="youremail@example.com"
+                    value={formData.email}
+                    onChange={(e) => handleFormData(e)}
+                  />
+                </div>
               </div>
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="password" className="font-bold">
+                <Label htmlFor="password" className="font-semibold text-base">
                   Password
                 </Label>
-                <Input
-                  className="placeholder:font-medium placeholder:text-black"
-                  name="password"
-                  type="password"
-                  placeholder="Enter your password"
-                  value={formData.password}
-                  onChange={(e) => handleFormData(e)}
-                />
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
+                  <Input
+                    className="pl-11 font-semibold placeholder:font-semibold text-gray-500 placeholder:text-gray-500"
+                    type="password"
+                    name="password"
+                    placeholder="•••••••••"
+                    value={formData.password}
+                    onChange={(e) => handleFormData(e)}
+                  />
+                </div>
               </div>
             </div>
           </form>
         </CardContent>
         <CardFooter className="flex flex-col justify-center ">
           <Button 
-            className="font-medium hover:cursor-pointer px-10"
+            className="font-semibold hover:cursor-pointer bg-blue-600 w-full text-base"
             onClick={handleSignin}
             >
-            <LogIn className="text-white" /> Signin
+            <LogIn className="text-white" /> Sign in
           </Button>
-          <span className="font-medium">
-          Don't have a account?{" "}
-            <Link className="font-bold" to="/signup">
-              Signup
+          <div className="flex mt-4 items-center font-semibold text-sm text-gray-500 gap-1">
+            <span>Don't have an account?</span>
+            <Link className="text-blue-600 flex items-center gap-1" to="/signup">
+              Sign up
+              <ArrowRight className="text-blue-600 w-4 h-4" />
             </Link>
-          </span>
+          </div>
+
         </CardFooter>
        
       </Card>
