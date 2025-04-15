@@ -16,112 +16,135 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router";
-import { LogIn } from "lucide-react";
-
+import { LogIn, Mail, Lock, ArrowRight, UserRound } from "lucide-react";
+import { useNavigate } from "react-router";
 
 
  function Signup() {
+
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
   
-  const [message, setMessage] = useState("");
-
   const handleFormData = (e) => {
     const {name, value} = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   }
 
   const handleSignup = async () =>{
-    const response = await axios.post("http://localhost:8000/signup",{
-      name:formData.name,
-      email: formData.email,
-      password: formData.password
-    })
-    setMessage(response.data.message);
-    toast.success(message);
+    try {
+      const response = await axios.post("http://localhost:8000/signup",{
+        name:formData.name,
+        email: formData.email,
+        password: formData.password
+      })
+      toast.success(`${response.data.message}, redirecting...`);
+      setTimeout(() => {
+        navigate("/signin")
+      },1000)
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   }
 
   
 
 
   return (
-    <div className="flex items-center justify-center h-screen bg-[#006A71]">
-      <Card className="w-[350px] bg-[#838b8b] text-black ">
-        <CardHeader>
-          <CardTitle className="font-bold text-2xl text-black flex justify-center">
-            Signup
-          </CardTitle>
-          <CardDescription className="text-black font-medium flex justify-center">
-            A Todo Application for your daily uses
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form>
-            <div className="grid w-full items-center gap-4">
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="name" className="font-bold">
-                  Name
-                </Label>
+    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+    <div className="flex flex-col items-center mb-6">
+        <h1 className="text-3xl font-semibold">Welcome</h1>
+        <p className="text-gray-500 font-semibold text-base">Sign up to save your Todo</p>
+    </div>
+    <Card className="w-[350px] bg-white text-gray-800 shadow-lg">
+      <CardContent>
+        <form>
+          <div className="grid w-full items-center gap-4">
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="name" className="text-base font-semibold">
+                Your Name
+              </Label>
+              <div className="relative">
+                <UserRound className="absolute w-4 h-4 left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
                 <Input
-                  className="placeholder:font-medium placeholder:text-black"
-                  type="text"
+                  className="pl-10 font-semibold placeholder:font-semibold  text-gray-500  placeholder:text-gray-500"
+                  type="name"
                   name="name"
-                  placeholder="Enter Your Full Name"
+                  placeholder="enter your name"
                   value={formData.name}
                   onChange={(e) => handleFormData(e)}
                 />
               </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="email" className="font-bold">
-                  Email
-                </Label>
+            </div>
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="email" className="text-base font-semibold">
+                Email Address
+              </Label>
+              <div className="relative">
+                <Mail className="absolute w-4 h-4 left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
                 <Input
-                  className="placeholder:font-medium placeholder:text-black"
+                  className="pl-10 font-semibold placeholder:font-semibold text-gray-500 placeholder:text-gray-500"
                   type="email"
                   name="email"
-                  placeholder="Enter your email"
+                  placeholder="youremail@example.com"
                   value={formData.email}
                   onChange={(e) => handleFormData(e)}
                 />
               </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="password" className="font-bold">
-                  Password
-                </Label>
+            </div>
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="password" className="font-semibold text-base">
+                Password
+              </Label>
+              <div className="relative">
+                <Lock className="absolute w-4 h-4 left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
                 <Input
-                  className="placeholder:font-medium placeholder:text-black"
-                  name="password"
+                  className="pl-10 font-semibold placeholder:font-semibold text-gray-500 placeholder:text-gray-500"
                   type="password"
-                  placeholder="Enter your password"
+                  name="password"
+                  placeholder="•••••••••"
                   value={formData.password}
                   onChange={(e) => handleFormData(e)}
                 />
               </div>
             </div>
-          </form>
-        </CardContent>
-        <CardFooter className="flex flex-col justify-center ">
-          <Button 
-            onClick={handleSignup}
-            className="font-medium hover:cursor-pointer px-10"
-            >
-            <LogIn className="text-white" /> Signup
-          </Button>
-          <span className="font-medium">
-            Already have a Account?{" "}
-            <Link className="font-bold" to="/signin">
-              Signin
-            </Link>
-          </span>
-        </CardFooter>
-        <Toaster 
-          position="top-right"
-        />
-      </Card>
-    </div>
+          </div>
+        </form>
+      </CardContent>
+      <CardFooter className="flex flex-col justify-center ">
+        <Button 
+          className="font-semibold hover:cursor-pointer bg-blue-600 w-full text-base"
+          onClick={handleSignup}
+          >
+          <LogIn className="text-white" /> Sign up
+        </Button>
+        <div className="flex mt-4 items-center font-semibold text-sm text-gray-500 gap-1">
+          <span>Already have account?</span>
+          <Link className="text-blue-600 flex items-center gap-1" to="/signin">
+            Sign in
+            <ArrowRight className="text-blue-600 w-4 h-4" />
+          </Link>
+        </div>
+
+      </CardFooter>
+     
+    </Card>
+    <Toaster
+      position="top-right"
+      reverseOrder={false}
+      toastOptions={{
+        className: "",
+        duration: 5000,
+        style: {
+          background: "#333",
+          color: "#fff",
+        },
+      }}
+    />
+  </div>
   );
 }
 
