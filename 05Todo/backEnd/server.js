@@ -89,19 +89,19 @@ app.post('/login', async (req, res)=>{
 
 })
 
-app.post('/todos', auth, async (req, res)=>{
+app.post('/todo', auth, async (req, res)=>{
     const {tittle, done} = req.body;
     const userId = req.userId;
     if(!userId){
         return res.status(401).json({message: "Unauthorized"})
     }
-    if(!tittle || !done){
-        return res.status(400).json({message: "Please fill all fields"})
+    if(!tittle){
+        return res.status(400).json({message: "Please fill the todo fields"})
     }
     try {
         const newTodo = await TodoModel.create({
             tittle,
-            done,
+            done: done || false,
             userId
         })
         await newTodo.save();
@@ -131,6 +131,7 @@ app.get('/todos', auth, async (req, res)=>{
         return res.status(500).json({message: "Internal server error"})
     }
 })
+
 
 
 app.listen('8000', ()=>{

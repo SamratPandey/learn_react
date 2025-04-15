@@ -24,7 +24,7 @@ const DarkLight = () => {
         <>
             <div className="absolute top-15 right-20 z-10">
                 <button 
-                    className="bg-transparent"
+                    className="bg-transparent hover:cursor-pointer"
                     onClick={toggleDarkMode}
                 >
                     {darkMode ?<Moon className="text-white" /> : <Sun className="text-black" />}
