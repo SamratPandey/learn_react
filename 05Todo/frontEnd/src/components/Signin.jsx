@@ -16,11 +16,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router";
 import { LogIn, Mail, Lock, ArrowRight } from "lucide-react";
-
+import DarkLight from "./DarkLight";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
-function Signin() {
+const Signin = () =>{
 
   const navigate = useNavigate();
 
@@ -53,12 +53,13 @@ function Signin() {
 
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center h-screen bg-gray-100 dark:bg-gray-700">
+        <DarkLight />
       <div className="flex flex-col items-center mb-6">
           <h1 className="text-3xl font-semibold">Welcome Back</h1>
-          <p className="text-gray-500 font-semibold text-base">Sign in to access your Todo</p>
+          <p className="text-gray-500 dark:text-gray-400 font-semibold text-base">Sign in to access your Todo</p>
       </div>
-      <Card className="w-[350px] bg-white text-gray-800 shadow-lg">
+      <Card className="w-[350px] bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-400 shadow-lg">
         <CardContent>
           <form>
             <div className="grid w-full items-center gap-4">
@@ -102,7 +103,7 @@ function Signin() {
             className="font-semibold hover:cursor-pointer bg-blue-600 w-full text-base"
             onClick={handleSignin}
             >
-            <LogIn className="text-white" /> Sign in
+            <LogIn className="text-white dark:text-black" /> Sign in
           </Button>
           <div className="flex mt-4 items-center font-semibold text-sm text-gray-500 gap-1">
             <span>Don't have an account?</span>
@@ -111,16 +112,13 @@ function Signin() {
               <ArrowRight className="text-blue-600 w-4 h-4" />
             </Link>
           </div>
-
         </CardFooter>
-       
       </Card>
       <Toaster
-        position="top-right"
+        position="down-center"
         reverseOrder={false}
         toastOptions={{
-          className: "",
-          duration: 5000,
+          duration: 2000,
           style: {
             background: "#333",
             color: "#fff",

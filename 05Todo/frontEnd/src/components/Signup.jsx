@@ -18,7 +18,7 @@ import { Label } from "@/components/ui/label";
 import { Link } from "react-router";
 import { LogIn, Mail, Lock, ArrowRight, UserRound } from "lucide-react";
 import { useNavigate } from "react-router";
-
+import DarkLight from "./DarkLight";
 
  function Signup() {
 
@@ -54,12 +54,13 @@ import { useNavigate } from "react-router";
 
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center h-screen bg-gray-100 dark:bg-gray-700">
+      <DarkLight />
     <div className="flex flex-col items-center mb-6">
-        <h1 className="text-3xl font-semibold">Welcome</h1>
-        <p className="text-gray-500 font-semibold text-base">Sign up to save your Todo</p>
+        <h1 className="text-3xl text-black dark:text-white font-semibold">Welcome</h1>
+        <p className="text-gray-500 dark:text-gray-400  font-semibold text-base">Sign up to save your Todo</p>
     </div>
-    <Card className="w-[350px] bg-white text-gray-800 shadow-lg">
+    <Card className="w-[350px] bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-400 shadow-lg">
       <CardContent>
         <form>
           <div className="grid w-full items-center gap-4">
@@ -119,7 +120,7 @@ import { useNavigate } from "react-router";
           className="font-semibold hover:cursor-pointer bg-blue-600 w-full text-base"
           onClick={handleSignup}
           >
-          <LogIn className="text-white" /> Sign up
+          <LogIn className="text-white dark:text-gray-900" /> Sign up
         </Button>
         <div className="flex mt-4 items-center font-semibold text-sm text-gray-500 gap-1">
           <span>Already have account?</span>
@@ -132,18 +133,17 @@ import { useNavigate } from "react-router";
       </CardFooter>
      
     </Card>
-    <Toaster
-      position="top-right"
-      reverseOrder={false}
-      toastOptions={{
-        className: "",
-        duration: 5000,
-        style: {
-          background: "#333",
-          color: "#fff",
-        },
-      }}
-    />
+        <Toaster
+         position="down-center"
+         reverseOrder={false}
+         toastOptions={{
+           duration: 2000,
+           style: {
+             background: "#333",
+             color: "#fff",
+           },
+         }}
+        />
   </div>
   );
 }
