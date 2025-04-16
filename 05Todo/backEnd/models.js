@@ -22,6 +22,9 @@ const todos = new Schema({
     done:{
         type: Boolean
     },
+    catagories:{
+        type: String
+    },
     userId:{
         type: ObjectId    
     }

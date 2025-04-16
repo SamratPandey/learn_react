@@ -118,11 +118,7 @@ const Signin = () =>{
         position="down-center"
         reverseOrder={false}
         toastOptions={{
-          duration: 2000,
-          style: {
-            background: "#333",
-            color: "#fff",
-          },
+          duration: 1000,
         }}
       />
     </div>
