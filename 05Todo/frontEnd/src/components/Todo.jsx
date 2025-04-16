@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef, use } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { Trash2, Pencil } from "lucide-react";
@@ -48,10 +49,11 @@ const Task = ({ todo, setTodo, handleAddTodo, taskRef }) => {
 
 
 const Todo = () => {
+  const navigate = useNavigate();
+
   const [todos, setTodos] = useState([]);
   const [showTask, setShowTask] = useState(false);
   const taskRef = useRef(null);
-
   const [todo, setTodo] = useState({ tittle: "" });
 
   const handleAddTodo = async () => {
@@ -73,9 +75,22 @@ const Todo = () => {
       toast.error(error.response.data.message);
     }
   };
-  const handleDeleteTodo = async (id) => {};
+  const handleDeleteTodo = async (id) => {
+      try {
+        const response = await axios.delete(`http://localhost:8000/todo/${id}`, {
+          headers: {
+            token: localStorage.getItem("token"),
+          }
+        })
+        toast.success(response.data.message);
+      } catch (error) {
+        toast.error(error.response.data.message);
+      }
+  };
 
-  const handleEditTodo = async (id) => {};
+  const handleEditTodo = async (id) => {
+
+  };
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -110,7 +125,7 @@ const Todo = () => {
     }
   };
   return (
-    <div className="bg-gray-100 flex flex-col justify-center items-center dark:bg-gray-900 h-screen w-screen">
+    <div className="bg-gray-100 dark:bg-gray-700  flex flex-col justify-center items-center h-screen w-screen">
       <DarkLight />
       {showTask ? (
         <Task
@@ -120,59 +135,74 @@ const Todo = () => {
             taskRef={taskRef}
         />
         ) : null}
-
-      <div className="absolute top-35 right-40 z-10">
-        <button
-          onClick={() => handleTask()}
-          className="hover:cursor-pointer px-7 py-3 bg-white dark:bg-gray-700 shadow-2xl rounded-2xl font-bold text-gray-500 dark:text-gray-400"
-        >
-          Add Task +
-        </button>
-      </div>
-      {todos.length > 0 ? (
-        todos.map((todo) => {
-          return (
-            <Card
-              key={todo._id}
-              className="flex flex-row p-2 bg-gray-900 items-center gap-2 mb-2"
+       
+        <div className=" flex flex-row top-35 right-40 z-10">
+            <button
+              onClick={() => handleTask()}
+              className=" absolute top-25 right-35  hover:cursor-pointer px-4 py-2 bg-gray-300 dark:bg-gray-900/50 shadow-2xl rounded-2xl font-bold text-gray-500 dark:text-gray-400"
             >
-              <h1
-                className={`${
-                  todo.done ? "line-through" : "no-underline"
-                } text-3xl text-black dark:text-white font-semibold`}
-              >
-                {todo.tittle}
-              </h1>
-              <button className="bg-transparent">
-                <Pencil
-                  onClick={() => handleEditTodo(todo._id)}
-                  className="text-gray-500 dark:text-gray-400 hover:cursor-pointer"
-                />
-              </button>
-              <button>
-                <Trash2
-                  onClick={() => handleDeleteTodo(todo._id)}
-                  className="text-red-500 dark:text-red-400 hover:cursor-pointer"
-                />
-              </button>
-            </Card>
-          );
-        })
-      ) : (
-        <div className="flex flex-col items-center justify-center h-screen">
-          <h1 className="text-3xl text-black dark:text-white font-semibold">
-            No Todos
-          </h1>
-          <p className="text-gray-500 dark:text-gray-400  font-semibold text-base">
-            You have no todos yet
-          </p>
+              Add Task +
+            </button>
+            <button
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  navigate("/")
+                }}
+                className="absolute top-25 right-5 bg-red-500 hover:bg-red-600 hover:cursor-pointer text-gray-100 font-bold py-2 px-4 rounded-2xl shadow-2xl"
+            >
+                Logout
+            </button>
         </div>
-      )}
+
+        <div className="w-full max-w-md rounded-lg shadow-md bg-white dark:bg-gray-900 p-4 overflow-y-auto max-h-96">
+            {todos.length > 0 ? (
+              <div className="space-y-3">
+                {todos.map((todo) => (
+                  <div
+                    key={todo._id}
+                    className="flex items-center justify-between p-3 rounded-md bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700"
+                  >
+                    <p
+                      className={`${
+                        todo.done ? "line-through text-gray-500" : "text-black dark:text-white"
+                      } font-medium flex-grow`}
+                    >
+                      {todo.tittle}
+                    </p>
+                    <div className="flex space-x-2">
+                      <button 
+                        className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 hover:cursor-pointer  transition-colors"
+                        onClick={() => handleEditTodo(todo._id)}
+                      >
+                        <Pencil size={18} className="text-gray-500 dark:text-gray-400" />
+                      </button>
+                      <button 
+                        className="p-1 rounded-full hover:bg-red-100 dark:hover:bg-red-900/50 hover:cursor-pointer  transition-colors"
+                        onClick={() => handleDeleteTodo(todo._id)}
+                      >
+                        <Trash2 size={18} className="text-red-500 dark:text-red-400" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="py-8 flex flex-col items-center justify-center text-center">
+                <h3 className="text-xl font-semibold text-black dark:text-white mb-2">
+                  No Todos
+                </h3>
+                <p className="text-gray-500 dark:text-gray-400 text-sm">
+                  Add a task to get started
+                </p>
+              </div>
+            )}
+          </div>
+          
 
       <Toaster
-        position="top-right"
+        position="down-center"
         toastOptions={{
-          duration: 3000,
+          duration: 1000,
         }}
       />
     </div>
